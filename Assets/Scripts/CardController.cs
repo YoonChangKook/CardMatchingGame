@@ -48,7 +48,10 @@ public class CardController : MonoBehaviour
         cardManager.OnCardSelected(this);
     }
 
-    public void Lock() => isMatched = true;
+    public void Lock() {
+        isMatched = true;
+        //cardManager.ShowScore();
+    }
 
     public bool IsFront() => isFront;
 

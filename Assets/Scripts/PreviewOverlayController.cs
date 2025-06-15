@@ -23,6 +23,8 @@ public class PreviewOverlayController : MonoBehaviour
 
     IEnumerator FadeOutSequence()
     {
+        initCanvasAlpha();
+
         // 1초 동안 유지
         yield return new WaitForSeconds(holdTime);
 
@@ -41,5 +43,10 @@ public class PreviewOverlayController : MonoBehaviour
 
         canvasGroup.alpha = 0f;
         gameObject.SetActive(false);
+    }
+
+    public void initCanvasAlpha()
+    {
+        canvasGroup.alpha = 1f;
     }
 }

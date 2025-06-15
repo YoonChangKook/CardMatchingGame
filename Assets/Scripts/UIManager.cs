@@ -1,28 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject startPanel;
+    public GameObject istPanel;
+    public GameObject descriptionPanel;
     public GameObject gameUI;
+    public GameObject gameClearPanel;
+
+    private void resetUI()
+    {
+        startPanel.SetActive(false);
+        istPanel.SetActive(false);
+        descriptionPanel.SetActive(false);
+        gameUI.SetActive(false);
+        gameClearPanel.SetActive(false);
+    }
 
     public void ShowStartUI()
     {
+        resetUI();
         startPanel.SetActive(true);
-        gameUI.SetActive(false);
+    }
+
+    public void ShowIstPanel()
+    {
+        resetUI();
+        istPanel.SetActive(true);
+    }
+
+    public void ShowDescriptionPanel()
+    {
+        resetUI();
+        descriptionPanel.SetActive(true);
     }
 
     public void ShowGameUI()
     {
-        startPanel.SetActive(false);
+        resetUI();
         gameUI.SetActive(true);
     }
 
-    public void ShowResultUI(string result)
+    public void ShowGameClearPanel()
     {
-        startPanel.SetActive(false);
-        gameUI.SetActive(false);
+        resetUI();
+        gameClearPanel.SetActive(true);
     }
 }

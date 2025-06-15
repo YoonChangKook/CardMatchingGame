@@ -5,21 +5,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public UIManager uiManager;
     public TextMeshProUGUI countdownText;
     public CardManager cardManager;
     public float previewDuration = 5f;  // 카드 앞면 보여주는 시간
     public float fadeDuration = 1f;
 
-    public GameObject countdownUI;
-
     private float currentTime;
     private bool gameEnded = false;
-    public float timeLimit = 60f;
 
     public TextMeshProUGUI timerText;
-    public Image progressFillImage; // 시간초 프로그래스 바 이미지
-    public GameObject successOverlay;
-    public GameObject failOverlay;
+    public GameObject previewOverlay;
+    public GameObject countdownUI;
     public GameObject timerUI;
 
     void Start()
@@ -30,8 +27,6 @@ public class GameManager : MonoBehaviour
     public void disableUI()
     {
         // UI 비활성화
-        successOverlay.SetActive(false);
-        failOverlay.SetActive(false);
         timerUI.SetActive(false);
     }
 
@@ -78,21 +73,15 @@ public class GameManager : MonoBehaviour
 
     IEnumerator TimerRoutine()
     {
-        currentTime = timeLimit;
+        currentTime = 0;
         timerUI.SetActive(true);
 
-        float ratio;
-
-        while (currentTime > 0)
+        while (true)
         {
             // 텍스트 업데이트
-            timerText.text = Mathf.CeilToInt(currentTime).ToString();
+            timerText.text = currentTime.ToString("F3");
 
-            // Fill 업데이트
-            ratio = currentTime / timeLimit;
-            progressFillImage.fillAmount = ratio;
-
-            currentTime -= Time.deltaTime;
+            currentTime += Time.deltaTime;
 
             if (cardManager.AreAllCardsMatched() && !gameEnded)
             {
@@ -109,30 +98,25 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        ratio = currentTime / timeLimit;
-        progressFillImage.fillAmount = ratio;
-
-        if (!gameEnded)
-        {
-            EndGame(false);
-        }
-    }
-
-    public void CheckAllMatched()
-    {
-        if (cardManager.AreAllCardsMatched() && !gameEnded)
-        {
-            EndGame(true);
-        }
+        // 게임 끝나면 Clear 화면 노출
+        uiManager.ShowGameClearPanel();
     }
 
     private void EndGame(bool success)
     {
         gameEnded = true;
         cardManager.canToggle = false;
-        if (success)
-            successOverlay.SetActive(true);
-        else
-            failOverlay.SetActive(true);
+    }
+
+    public void initialize()
+    {
+        gameEnded = false;
+        StopAllCoroutines();
+        previewOverlay.SetActive(true);
+        countdownUI.SetActive(true);
+        timerUI.SetActive(false);
+        cardManager.ClearCards();
+        cardManager.canToggle = true;
+        uiManager.ShowStartUI();
     }
 }

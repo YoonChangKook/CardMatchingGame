@@ -79,6 +79,7 @@ public class CardManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         spawnedCards.Clear();
+        cards.Clear();
     }
 
     public List<CardController> GetAllCards()
@@ -163,5 +164,11 @@ public class CardManager : MonoBehaviour
     public bool AreAllCardsMatched()
     {
         return cards.Count > 0 && cards.All(c => c.isMatched);
+    }
+
+    public void ShowScore()
+    {
+        int matchedCount = cards.Count(card => card.isMatched);
+        Debug.Log("Matched Count: " + matchedCount + ", Total cards: " + cards.Count + ", All Matched: " + cards.All(c => c.isMatched));
     }
 }
